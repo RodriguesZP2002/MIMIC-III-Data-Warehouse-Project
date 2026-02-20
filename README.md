@@ -2,6 +2,9 @@
 Hello! This is my Data Warehousing Project using the MIMIC_III Clinical Database Demo v.1.4.\
 
 # References
-[1} Johnson, A., Pollard, T., & Mark, R. (2016). MIMIC-III Clinical Database (version 1.4). PhysioNet. RRID:SCR_007345. https://doi.org/10.13026/C2XW26\
+[1] Johnson, A., Pollard, T., & Mark, R. (2016). MIMIC-III Clinical Database (version 1.4). PhysioNet. RRID:SCR_007345. https://doi.org/10.13026/C2XW26\
 [2] Johnson, A. E. W., Pollard, T. J., Shen, L., Lehman, L. H., Feng, M., Ghassemi, M., Moody, B., Szolovits, P., Celi, L. A., & Mark, R. G. (2016). MIMIC-III, a freely accessible critical care database. Scientific Data, 3, 160035.\
 [3] Goldberger, A., Amaral, L., Glass, L., Hausdorff, J., Ivanov, P. C., Mark, R., ... & Stanley, H. E. (2000). PhysioBank, PhysioToolkit, and PhysioNet: Components of a new research resource for complex physiologic signals. Circulation [Online]. 101 (23), pp. e215–e220. RRID:SCR_007345.\
+[4] Kimball, R., & Ross, M. (2013). The data warehouse toolkit: The definitive guide to dimensional modeling. John Wiley & Sons.\
+[5] DataWithBaara. (2024). Data Warehousing and Analytics Project.\
+[6] Massachusetts Institute of Technology. (n.d.). MIMIC-III tables overview. MIT Laboratory for Computational Physiology. Retrieved [Month Day, Year], from https://mimic.mit.edu/docs/iii/tables/\
