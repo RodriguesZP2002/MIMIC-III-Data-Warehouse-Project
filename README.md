@@ -7,4 +7,4 @@ Hello! This is my Data Warehousing Project using the MIMIC_III Clinical Database
 [3] Goldberger, A., Amaral, L., Glass, L., Hausdorff, J., Ivanov, P. C., Mark, R., ... & Stanley, H. E. (2000). PhysioBank, PhysioToolkit, and PhysioNet: Components of a new research resource for complex physiologic signals. Circulation [Online]. 101 (23), pp. e215–e220. RRID:SCR_007345.\
 [4] Kimball, R., & Ross, M. (2013). The data warehouse toolkit: The definitive guide to dimensional modeling. John Wiley & Sons.\
 [5] DataWithBaara. (2024). Data Warehousing and Analytics Project.\
-[6] Massachusetts Institute of Technology. (n.d.). MIMIC-III tables overview. MIT Laboratory for Computational Physiology. Retrieved [Month Day, Year], from https://mimic.mit.edu/docs/iii/tables/
+[6] Massachusetts Institute of Technology. (n.d.). MIMIC-III tables overview. MIT Laboratory for Computational Physiology. from https://mimic.mit.edu/docs/iii/tables/
