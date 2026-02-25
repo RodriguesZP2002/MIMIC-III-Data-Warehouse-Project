@@ -1,593 +1,618 @@
 /* 
-=======================
-===   DDL LEVEL 1   ===
-=======================
+=============================
+===   BULK LOAD LEVEL 1   ===
+=============================
 SCRIPT:
-	- CREATION OF TABLES OF ALL CSVs IN THE MIMIC-III DEMO DATABASE
+	- TRUNCATE AND BULK LOAD OF CSV CONTENT
 */
+CREATE OR ALTER PROCEDURE Level_1.load_level1 AS
+BEGIN
+    DECLARE @start_time DATETIME, @end_time DATETIME, @batch_start_time DATETIME, @batch_end_time DATETIME;
+    BEGIN TRY
+        SET @batch_start_time = GETDATE();
+        PRINT 'BATCH LOAD START...';
+        PRINT '=====================================================================================================';
+        
+        -- ADMISSIONS --
+        PRINT 'ADMISSIONS TABLE...';
+        SET @start_time = GETDATE();
+        TRUNCATE TABLE Level_1.Admissions;
+        BULK INSERT Level_1.Admissions
+        FROM '...\Documents\SQL\DW_Project\mimic-iii-clinical-database-demo-1.4\ADMISSIONS.csv'
+        WITH (
+            FORMAT = 'CSV',
+            FIRSTROW = 2,
+            FIELDTERMINATOR = ',',
+            ROWTERMINATOR = '0x0a',
+            KEEPNULLS,                
+            TABLOCK
+        );
+        SET @end_time = GETDATE();
+        PRINT 'ADMISSIONS TABLE CSV INSERT - FINALISED (' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds)';
 
--- ADMISSIONS TABLE	--
-USE Mimic_III_DW
-IF OBJECT_ID('Level_1.Admissions', 'U') IS NOT NULL
-	DROP TABLE Level_1.Admissions;
+        -- CALLOUT -- 
+        PRINT '=====================================================================================================';
+        PRINT 'CALLOUT TABLE...'
+        SET @start_time = GETDATE();
+
+        TRUNCATE TABLE Level_1.Callout;
+
+        BULK INSERT Level_1.Callout
+        FROM '...\Documents\SQL\DW_Project\mimic-iii-clinical-database-demo-1.4\CALLOUT.csv'
+        WITH (
+            FORMAT = 'CSV',
+            FIRSTROW = 2,
+            FIELDTERMINATOR = ',',
+            ROWTERMINATOR = '0x0a',
+            KEEPNULLS,                
+            TABLOCK
+        );
+        SET @end_time = GETDATE();
+        PRINT 'CALLOUT TABLE CSV INSERT - FINALISED (' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds)';
+        PRINT '=====================================================================================================';
+
+        -- CAREGIVERS --
+
+        PRINT '=====================================================================================================';
+        PRINT 'CAREGIVERS TABLE...';
+        SET @start_time = GETDATE();
+
+        TRUNCATE TABLE Level_1.Caregivers;
+
+        BULK INSERT Level_1.Caregivers
+        FROM '...\Documents\SQL\DW_Project\mimic-iii-clinical-database-demo-1.4\CAREGIVERS.csv'
+        WITH (
+            FORMAT = 'CSV',
+            FIRSTROW = 2,
+            FIELDTERMINATOR = ',',
+            ROWTERMINATOR = '0x0a',
+            KEEPNULLS,                
+            TABLOCK
+        );
+        SET @end_time = GETDATE();
+        PRINT 'CAREGIVERS TABLE CSV INSERT - FINALISED (' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds)';
+        PRINT '=====================================================================================================';
+
+        -- CHARTEVENTS --
+
+        PRINT '=====================================================================================================';
+        PRINT 'CHARTEVENTS TABLE...';
+        SET @start_time = GETDATE();
+
+        TRUNCATE TABLE Level_1.Chartevents;
+
+        BULK INSERT Level_1.Chartevents
+        FROM '...\Documents\SQL\DW_Project\mimic-iii-clinical-database-demo-1.4\CHARTEVENTS.csv'
+        WITH (
+            FORMAT = 'CSV',
+            FIRSTROW = 2,
+            FIELDTERMINATOR = ',',
+            ROWTERMINATOR = '0x0a',
+            KEEPNULLS,                
+            TABLOCK
+        );
+        
+        SET @end_time = GETDATE();
+        PRINT 'CHARTEVENTS TABLE CSV INSERT - FINALISED (' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds)';
+        PRINT '=====================================================================================================';
+
+        -- CPTEVENTS --
+
+        PRINT '=====================================================================================================';
+        PRINT 'CPTEVENTS TABLE...';
+        SET @start_time = GETDATE();
+
+        TRUNCATE TABLE Level_1.Cptevent;
+
+        BULK INSERT Level_1.Cptevent
+        FROM '...\Documents\SQL\DW_Project\mimic-iii-clinical-database-demo-1.4\CPTEVENTS.csv'
+        WITH (
+            FORMAT = 'CSV',
+            FIRSTROW = 2,
+            FIELDTERMINATOR = ',',
+            ROWTERMINATOR = '0x0a',
+            KEEPNULLS,                
+            TABLOCK
+        );
+        SET @end_time = GETDATE();
+        PRINT 'CPTEVENTS TABLE CSV INSERT - FINALISED (' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds)';
+        PRINT '=====================================================================================================';
+
+        -- D_CPT --
+
+        PRINT '=====================================================================================================';
+        PRINT 'D_CPT TABLE...';
+        SET @start_time = GETDATE();
+
+        TRUNCATE TABLE Level_1.D_cpt;
+
+        BULK INSERT Level_1.D_cpt
+        FROM '...\Documents\SQL\DW_Project\mimic-iii-clinical-database-demo-1.4\D_CPT.csv'
+        WITH (
+            FORMAT = 'CSV',
+            FIRSTROW = 2,
+            FIELDTERMINATOR = ',',
+            ROWTERMINATOR = '0x0a',
+            KEEPNULLS,                
+            TABLOCK
+        );
+        SET @end_time = GETDATE();
+        PRINT 'D_CPT TABLE CSV INSERT - FINALISED (' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds)';
+        PRINT '=====================================================================================================';
+
+        -- D_ICD_DIAGNOSIS --
+
+        PRINT '=====================================================================================================';
+        PRINT 'D_ICD_DIAGNOSIS TABLE...';
+        SET @start_time = GETDATE();
+
+        TRUNCATE TABLE Level_1.D_icd_diagnosis;
+
+        BULK INSERT Level_1.D_icd_diagnosis
+        FROM '...\Documents\SQL\DW_Project\mimic-iii-clinical-database-demo-1.4\D_ICD_DIAGNOSES.csv'
+        WITH (
+            FORMAT = 'CSV',
+            FIRSTROW = 2,
+            FIELDTERMINATOR = ',',
+            ROWTERMINATOR = '0x0a',
+            KEEPNULLS,                
+            TABLOCK
+        );
+        SET @end_time = GETDATE();
+        PRINT 'D_ICD_DIAGNOSIS TABLE CSV INSERT - FINALISED (' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds)';
+        PRINT '=====================================================================================================';
+
+        -- D_ICD_PROCEDURES --
+
+        PRINT '=====================================================================================================';
+        PRINT 'D_ICD_PROCEDURES TABLE...';
+        SET @start_time = GETDATE();
+
+        TRUNCATE TABLE Level_1.D_icd_procedures;
+
+        BULK INSERT Level_1.D_icd_procedures
+        FROM '...\Documents\SQL\DW_Project\mimic-iii-clinical-database-demo-1.4\D_ICD_PROCEDURES.csv'
+        WITH (
+            FORMAT = 'CSV',
+            FIRSTROW = 2,
+            FIELDTERMINATOR = ',',
+            ROWTERMINATOR = '0x0a',
+            KEEPNULLS,                
+            TABLOCK
+        );
+
+        SET @end_time = GETDATE();
+        PRINT 'D_ICD_PROCEDURES TABLE CSV INSERT - FINALISED (' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds)';
+        PRINT '=====================================================================================================';
+
+        -- D_ITEMS --
+
+        PRINT '=====================================================================================================';
+        PRINT 'D_ITEMS TABLE...';
+        SET @start_time = GETDATE();
+
+        TRUNCATE TABLE Level_1.D_items;
+
+        BULK INSERT Level_1.D_items
+        FROM '...\Documents\SQL\DW_Project\mimic-iii-clinical-database-demo-1.4\D_ITEMS.csv'
+        WITH (
+            FORMAT = 'CSV',
+            FIRSTROW = 2,
+            FIELDTERMINATOR = ',',
+            ROWTERMINATOR = '0x0a',
+            KEEPNULLS,                
+            TABLOCK
+        );
+
+        SET @end_time = GETDATE();
+        PRINT 'D_ITEMS TABLE CSV INSERT - FINALISED (' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds)';
+        PRINT '=====================================================================================================';
+
+        -- D_LABITEMS --
+
+        PRINT '=====================================================================================================';
+        PRINT 'D_LABITEMS TABLE...';
+        SET @start_time = GETDATE();
+
+        TRUNCATE TABLE Level_1.D_labitems;
+
+        BULK INSERT Level_1.D_labitems
+        FROM '...\Documents\SQL\DW_Project\mimic-iii-clinical-database-demo-1.4\D_LABITEMS.csv'
+        WITH (
+            FORMAT = 'CSV',
+            FIRSTROW = 2,
+            FIELDTERMINATOR = ',',
+            ROWTERMINATOR = '0x0a',
+            KEEPNULLS,                
+            TABLOCK
+        );
+
+        SET @end_time = GETDATE();
+        PRINT 'D_LABITEMS TABLE CSV INSERT - FINALISED (' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds)';
+        PRINT '=====================================================================================================';
+
+        -- DATETIMEEVENTS --
+
+        PRINT '=====================================================================================================';
+        PRINT 'DATETIMEEVENTS TABLE...';
+        SET @start_time = GETDATE();
+
+        TRUNCATE TABLE Level_1.Datetimeevents;
+
+        BULK INSERT Level_1.Datetimeevents
+        FROM '...\Documents\SQL\DW_Project\mimic-iii-clinical-database-demo-1.4\DATETIMEEVENTS.csv'
+        WITH (
+            FORMAT = 'CSV',
+            FIRSTROW = 2,
+            FIELDTERMINATOR = ',',
+            ROWTERMINATOR = '0x0a',
+            KEEPNULLS,                
+            TABLOCK
+        );
+
+        SET @end_time = GETDATE();
+        PRINT 'DATETIMEEVENTS TABLE CSV INSERT - FINALISED (' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds)';
+        PRINT '=====================================================================================================';
+
+        -- DIAGNOSIS_ICD --
+
+        PRINT '=====================================================================================================';
+        PRINT 'DIAGNOSIS_ICD TABLE...';
+        SET @start_time = GETDATE();
+
+        TRUNCATE TABLE Level_1.Diagnoses_icd;
+
+        BULK INSERT Level_1.Diagnoses_icd
+        FROM '...\Documents\SQL\DW_Project\mimic-iii-clinical-database-demo-1.4\DIAGNOSES_ICD.csv'
+        WITH (
+            FORMAT = 'CSV',
+            FIRSTROW = 2,
+            FIELDTERMINATOR = ',',
+            ROWTERMINATOR = '0x0a',
+            KEEPNULLS,                
+            TABLOCK
+        );
+
+        SET @end_time = GETDATE();
+        PRINT 'DIAGNOSIS_ICD TABLE CSV INSERT - FINALISED (' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds)';
+        PRINT '=====================================================================================================';
+
+        -- DRGCODES --
+
+        PRINT '=====================================================================================================';
+        PRINT 'DRGCODES TABLE...';
+        SET @start_time = GETDATE();
+
+        TRUNCATE TABLE Level_1.Drgcodes;
+
+        BULK INSERT Level_1.Drgcodes
+        FROM '...\Documents\SQL\DW_Project\mimic-iii-clinical-database-demo-1.4\DRGCODES.csv'
+        WITH (
+            FORMAT = 'CSV',
+            FIRSTROW = 2,
+            FIELDTERMINATOR = ',',
+            ROWTERMINATOR = '0x0a',
+            KEEPNULLS,                
+            TABLOCK
+        );
+
+        SET @end_time = GETDATE();
+        PRINT 'DRGCODES TABLE CSV INSERT - FINALISED (' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds)';
+        PRINT '=====================================================================================================';
+
+        -- ICUSTAYS --
+
+        PRINT '=====================================================================================================';
+        PRINT 'ICUSTAYS TABLE...';
+        SET @start_time = GETDATE();
+
+        TRUNCATE TABLE Level_1.Icustays;
+
+        BULK INSERT Level_1.Icustays
+        FROM '...\Documents\SQL\DW_Project\mimic-iii-clinical-database-demo-1.4\ICUSTAYS.csv'
+        WITH (
+            FORMAT = 'CSV',
+            FIRSTROW = 2,
+            FIELDTERMINATOR = ',',
+            ROWTERMINATOR = '0x0a',
+            KEEPNULLS,                
+            TABLOCK
+        );
+        
+        SET @end_time = GETDATE();
+        PRINT 'ICUSTAYS TABLE CSV INSERT - FINALISED (' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds)';
+        PRINT '====================================================================================================='
+
+        -- INPUTEVENTS_CV --
+
+        PRINT '=====================================================================================================';
+        PRINT 'INPUTEVENTS_CV TABLE...';
+        SET @start_time = GETDATE();
+
+        TRUNCATE TABLE Level_1.Inputevents_cv;
+
+        BULK INSERT Level_1.Inputevents_cv
+        FROM '...\Documents\SQL\DW_Project\mimic-iii-clinical-database-demo-1.4\INPUTEVENTS_CV.csv'
+        WITH (
+            FORMAT = 'CSV',
+            FIRSTROW = 2,
+            FIELDTERMINATOR = ',',
+            ROWTERMINATOR = '0x0a',
+            KEEPNULLS,                
+            TABLOCK
+        );
+        
+        SET @end_time = GETDATE();
+        PRINT 'INPUTEVENTS_CV TABLE CSV INSERT - FINALISED (' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds)';
+        PRINT '=====================================================================================================';
+
+        -- INPUTEVENTS_MV --
+
+        PRINT '=====================================================================================================';
+        PRINT 'INPUTEVENTS_MV TABLE...';
+        SET @start_time = GETDATE();
+
+        TRUNCATE TABLE Level_1.Inputevents_mv;
+
+        BULK INSERT Level_1.Inputevents_mv
+        FROM '...\Documents\SQL\DW_Project\mimic-iii-clinical-database-demo-1.4\INPUTEVENTS_MV.csv'
+        WITH (
+            FORMAT = 'CSV',
+            FIRSTROW = 2,
+            FIELDTERMINATOR = ',',
+            ROWTERMINATOR = '0x0a',
+            KEEPNULLS,                
+            TABLOCK
+        );
+        
+        SET @end_time = GETDATE();
+        PRINT 'INPUTEVENTS_MV TABLE CSV INSERT - FINALISED (' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds)';
+        PRINT '=====================================================================================================';
+
+        -- LABEVENTS --
+
+        PRINT '=====================================================================================================';
+        PRINT 'LABEVENTS TABLE...';
+        SET @start_time = GETDATE();
+
+        TRUNCATE TABLE Level_1.Labevents;
+
+        BULK INSERT Level_1.Labevents
+        FROM '...\Documents\SQL\DW_Project\mimic-iii-clinical-database-demo-1.4\LABEVENTS.csv'
+        WITH (
+            FORMAT = 'CSV',
+            FIRSTROW = 2,
+            FIELDTERMINATOR = ',',
+            ROWTERMINATOR = '0x0a',
+            KEEPNULLS,                
+            TABLOCK
+        );
+        
+        SET @end_time = GETDATE();
+        PRINT 'LABEVENTS TABLE CSV INSERT - FINALISED (' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds)';
+        PRINT '=====================================================================================================';
+
+        -- MICROBIOLOGYEVENTS --
+
+        PRINT '=====================================================================================================';
+        PRINT 'MICROBIOLOGYEVENTS TABLE...';
+        SET @start_time = GETDATE();
+
+        TRUNCATE TABLE Level_1.Microbiologyevents;
+
+        BULK INSERT Level_1.Microbiologyevents
+        FROM '...\Documents\SQL\DW_Project\mimic-iii-clinical-database-demo-1.4\MICROBIOLOGYEVENTS.csv'
+        WITH (
+            FORMAT = 'CSV',
+            FIRSTROW = 2,
+            FIELDTERMINATOR = ',',
+            ROWTERMINATOR = '0x0a',
+            KEEPNULLS,                
+            TABLOCK
+        );
+        
+        SET @end_time = GETDATE();
+        PRINT 'MICROBIOLOGYEVENTS TABLE CSV INSERT - FINALISED (' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds)';
+        PRINT '=====================================================================================================';
+
+        -- NOTEEVENTS --
+
+        PRINT '=====================================================================================================';
+        PRINT 'NOTEEVENTS TABLE...';
+        SET @start_time = GETDATE();
+
+        TRUNCATE TABLE Level_1.Noteevents;
+
+        BULK INSERT Level_1.Noteevents
+        FROM '...\Documents\SQL\DW_Project\mimic-iii-clinical-database-demo-1.4\NOTEEVENTS.csv'
+        WITH (
+            FORMAT = 'CSV',
+            FIRSTROW = 2,
+            FIELDTERMINATOR = ',',
+            ROWTERMINATOR = '0x0a',
+            KEEPNULLS,                
+            TABLOCK
+        );
+        
+        SET @end_time = GETDATE();
+        PRINT 'NOTEEVENTS TABLE CSV INSERT - FINALISED (' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds)';
+        PRINT '=====================================================================================================';
+
+        -- OUTPUTEVENTS --
+
+        PRINT '=====================================================================================================';
+        PRINT 'OUTPUTEVENTS TABLE...';
+        SET @start_time = GETDATE();
+
+        TRUNCATE TABLE Level_1.Outputevents;
+
+        BULK INSERT Level_1.Outputevents
+        FROM '...\Documents\SQL\DW_Project\mimic-iii-clinical-database-demo-1.4\OUTPUTEVENTS.csv'
+        WITH (
+            FORMAT = 'CSV',
+            FIRSTROW = 2,
+            FIELDTERMINATOR = ',',
+            ROWTERMINATOR = '0x0a',
+            KEEPNULLS,                
+            TABLOCK
+        );
+        
+        SET @end_time = GETDATE();
+        PRINT 'OUTPUTEVENTS TABLE CSV INSERT - FINALISED (' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds)';
+        PRINT '=====================================================================================================';
+
+        -- PATIENTS --
+
+        PRINT '=====================================================================================================';
+        PRINT 'PATIENTS TABLE...';
+        SET @start_time = GETDATE();
+
+        TRUNCATE TABLE Level_1.Patients;
+
+        BULK INSERT Level_1.Patients
+        FROM '...\Documents\SQL\DW_Project\mimic-iii-clinical-database-demo-1.4\PATIENTS.csv'
+        WITH (
+            FORMAT = 'CSV',
+            FIRSTROW = 2,
+            FIELDTERMINATOR = ',',
+            ROWTERMINATOR = '0x0a',
+            KEEPNULLS,                
+            TABLOCK
+        );
+        
+        SET @end_time = GETDATE();
+        PRINT 'PATIENTS TABLE CSV INSERT - FINALISED (' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds)';
+        PRINT '=====================================================================================================';
+
+        -- PRESCRIPTIONS --
+
+        PRINT '=====================================================================================================';
+        PRINT 'PRESCRIPTIONS TABLE...';
+        SET @start_time = GETDATE();
+
+        TRUNCATE TABLE Level_1.Prescriptions;
+
+        BULK INSERT Level_1.Prescriptions
+        FROM '...\Documents\SQL\DW_Project\mimic-iii-clinical-database-demo-1.4\PRESCRIPTIONS.csv'
+        WITH (
+            FORMAT = 'CSV',
+            FIRSTROW = 2,
+            FIELDTERMINATOR = ',',
+            ROWTERMINATOR = '0x0a',
+            KEEPNULLS,                
+            TABLOCK
+        );
+        
+        SET @end_time = GETDATE();
+        PRINT 'PRESCRIPTIONS TABLE CSV INSERT - FINALISED (' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds)';
+        PRINT '=====================================================================================================';
+
+        -- PROCEDUREEVENTS_MV --
+
+        PRINT '=====================================================================================================';
+        PRINT 'PROCEDUREEVENTS_MV TABLE...';
+        SET @start_time = GETDATE();
+
+        TRUNCATE TABLE Level_1.Procedureevents_mv;
+
+        BULK INSERT Level_1.Procedureevents_mv
+        FROM '...\Documents\SQL\DW_Project\mimic-iii-clinical-database-demo-1.4\PROCEDUREEVENTS_MV.csv'
+        WITH (
+            FORMAT = 'CSV',
+            FIRSTROW = 2,
+            FIELDTERMINATOR = ',',
+            ROWTERMINATOR = '0x0a',
+            KEEPNULLS,                
+            TABLOCK
+        );
+        
+        SET @end_time = GETDATE();
+        PRINT 'PROCEDUREEVENTS_MV TABLE CSV INSERT - FINALISED (' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds)';
+        PRINT '=====================================================================================================';
+
+        -- PROCEDURES_ICD --
+
+        PRINT '=====================================================================================================';
+        PRINT 'PROCEDURES_ICD TABLE...';
+        SET @start_time = GETDATE();
+
+        TRUNCATE TABLE Level_1.Procedures_icd;
+
+        BULK INSERT Level_1.Procedures_icd
+        FROM '...\Documents\SQL\DW_Project\mimic-iii-clinical-database-demo-1.4\PROCEDURES_ICD.csv'
+        WITH (
+            FORMAT = 'CSV',
+            FIRSTROW = 2,
+            FIELDTERMINATOR = ',',
+            ROWTERMINATOR = '0x0a',
+            KEEPNULLS,                
+            TABLOCK
+        );
+        
+        SET @end_time = GETDATE();
+        PRINT 'PROCEDURES_ICD TABLE CSV INSERT - FINALISED (' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds)';
+        PRINT '=====================================================================================================';
+
+        -- SERVICES --
+        
+        PRINT '=====================================================================================================';
+        PRINT 'SERVICES TABLE...';
+        SET @start_time = GETDATE();
+
+        TRUNCATE TABLE Level_1.Services_;
+
+        BULK INSERT Level_1.Services_
+        FROM '...\Documents\SQL\DW_Project\mimic-iii-clinical-database-demo-1.4\SERVICES.csv'
+        WITH (
+            FORMAT = 'CSV',
+            FIRSTROW = 2,
+            FIELDTERMINATOR = ',',
+            ROWTERMINATOR = '0x0a',
+            KEEPNULLS,                
+            TABLOCK
+        );
+        
+        SET @end_time = GETDATE();
+        PRINT 'SERVICES TABLE CSV INSERT - FINALISED (' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds)';
+        PRINT '=====================================================================================================';
+
+        -- TRANSFERS --
+
+        PRINT '=====================================================================================================';
+        PRINT 'TRANSFERS TABLE...';
+        SET @start_time = GETDATE();
+
+        TRUNCATE TABLE Level_1.Transfers;
+
+        BULK INSERT Level_1.Transfers
+        FROM '...\Documents\SQL\DW_Project\mimic-iii-clinical-database-demo-1.4\TRANSFERS.csv'
+        WITH (
+            FORMAT = 'CSV',
+            FIRSTROW = 2,
+            FIELDTERMINATOR = ',',
+            ROWTERMINATOR = '0x0a',
+            KEEPNULLS,                
+            TABLOCK
+        );
+        
+        SET @end_time = GETDATE();
+        PRINT 'TRANSFERS TABLE CSV INSERT - FINALISED (' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds)';
+        PRINT '=====================================================================================================';
+
+        SET @batch_end_time = GETDATE();
+
+        PRINT '=====================================================================================================';
+        PRINT '=====================================================================================================';
+        PRINT 'TOTAL LOADING CSV LOADING TIME: ' + CAST(DATEDIFF(second,@batch_start_time, @batch_end_time) AS NVARCHAR) + ' seconds'; 
+        PRINT '=====================================================================================================';
+        PRINT '=====================================================================================================';
+
+    END TRY
+    BEGIN CATCH
+            PRINT 'ERROR MESSAGE: ' + ERROR_MESSAGE();
+            PRINT 'ERROR NUMBER: ' + CAST(ERROR_NUMBER() AS NVARCHAR);
+            PRINT 'ERROR STATE: ' + CAST(ERROR_STATE() AS NVARCHAR);
+    END CATCH
+END
 GO
-
-CREATE TABLE Level_1.Admissions (
-	row_id	INT,
-	subject_id INT,
-	hadm_id	INT,
-	admittime	DATETIME2(0),
-	dischtime	DATETIME2(0),
-	deathtime	DATETIME2(0),
-	admission_type	VARCHAR(50),
-	admission_location	VARCHAR(50),
-	discharge_location	VARCHAR(50),
-	insurance	VARCHAR(255),
-	language_	VARCHAR(10),
-	religion	VARCHAR(50),
-	marital_status	VARCHAR(50),
-	ethnicity	VARCHAR(200),
-	edregtime	DATETIME2(0),
-	edouttime	DATETIME2(0),
-	diagnosis	VARCHAR(300),
-	hospital_expire_flag	BIT,
-	has_chartevents_data	BIT
-);
-GO
-
--- CALLOUT TABLE --
-
-IF OBJECT_ID('Level_1.Callout', 'U') IS NOT NULL
-	DROP TABLE Level_1.Callout;
-GO
-
-CREATE TABLE Level_1.Callout(
-	row_id	INT,
-	subject_id	INT,
-	hadm_id	INT,
-	submit_wardid	INT,
-	submit_careunit	VARCHAR(15),
-	curr_wardid	INT,
-	curr_careunit	VARCHAR(15),
-	callout_wardid	INT,
-	callout_service	VARCHAR(10),
-	request_tele	BIT,
-	request_resp	BIT,
-	request_cdiff	BIT,
-	request_mrsa	BIT,
-	request_vre	BIT,
-	callout_status	VARCHAR(20),
-	callout_outcome	VARCHAR(20),
-	discharge_wardid	INT,
-	acknowledge_status	VARCHAR(20),
-	createtime	DATETIME2(0),
-	updatetime	DATETIME2(0),
-	acknowledgetime	DATETIME2(0),
-	outcometime	DATETIME2(0),
-	firstreservationtime	DATETIME2(0),
-	currentreservationtime	DATETIME2(0)
-);
-GO
-
--- CAREGIVERS TABLE --
-
-IF OBJECT_ID('Level_1.Caregivers', 'U') IS NOT NULL
-	DROP TABLE Level_1.Caregivers;
-GO
-
-CREATE TABLE Level_1.Caregivers(
-	row_id	INT,
-	cgid	INT,
-	label_	VARCHAR(15),
-	description_	VARCHAR(30)
-);
-GO
-
--- CHARTEVENTS --
-
-IF OBJECT_ID('Level_1.Chartevents', 'U') IS NOT NULL
-	DROP TABLE Level_1.Chartevents;
-GO
-
-CREATE TABLE Level_1.Chartevents(
-	row_id	INT,
-	subject_id	INT, -- NEEDS TO BE 7 NUMBERS
-	hadm_id	INT, -- NEEDS TO BE 7 NUMBERS
-	icustay_id	INT, -- NEEDS TO BE 7 NUMBERS
-	itemid	INT, -- NEEDS TO BE 7 NUMBERS
-	charttime	DATETIME2(0),
-	storetime	DATETIME2(0),
-	cgid	INT,
-	value_	VARCHAR(20),
-	valuenum	INT,
-	valueuom	VARCHAR(20),
-	warning	BIT,
-	error	BIT,
-	resultstatus	VARCHAR(20),
-	stopped_	VARCHAR(20)
-);
-GO
-
--- CPTEVENTS --
-
-IF OBJECT_ID('Level_1.Cptevent', 'U') IS NOT NULL
-	DROP TABLE Level_1.Cptevent;
-GO
-
-CREATE TABLE Level_1.Cptevent(
-	row_id	INT,
-	subject_id	INT,
-	hadm_id	INT,
-	costcenter	VARCHAR(10),
-	chartdate	DATETIME2(0),
-	cpt_cd	VARCHAR(10),
-	cpt_number	INT,
-	cpt_suffix	VARCHAR(5),
-	ticket_id_seq	INT,
-	sectionheader	VARCHAR(50),
-	subsectionheader	VARCHAR(300),
-	description_	VARCHAR(200)
-);
-
--- D_CPT --
-
-IF OBJECT_ID('Level_1.D_cpt', 'U') IS NOT NULL
-	DROP TABLE Level_1.D_cpt;
-GO
-
-CREATE TABLE Level_1.D_cpt(
-	row_id	INT,
-	category TINYINT,
-	sectionrange	VARCHAR(100),
-	sectionheader	VARCHAR(50),
-	subsectionrange	VARCHAR(100),
-	subsectionheader	VARCHAR(300),
-	codesuffix	VARCHAR(5),
-	mincodeinsubsection	INT,
-	maxcodeinsubsection	INT
-);
-GO
-
--- D_ICD_DIAGNOSIS --
-
-IF OBJECT_ID('Level_1.D_icd_diagnosis', 'U') IS NOT NULL
-	DROP TABLE Level_1.D_icd_diagnosis;
-GO
-
-CREATE TABLE Level_1.D_icd_diagnosis(
-	row_id	INT,
-	icd9_code	VARCHAR(10),
-	short_title	VARCHAR(50),
-	long_title	VARCHAR(300)
-);
-GO
-
--- D_ICD_PROCEDURES --
-
-IF OBJECT_ID('Level_1.D_icd_procedures', 'U') IS NOT NULL
-	DROP TABLE Level_1.D_icd_procedures;
-GO
-
-CREATE TABLE Level_1.D_icd_procedures(
-	row_id	INT,
-	icd9_code	VARCHAR(10),
-	short_title	VARCHAR(50),
-	long_title	VARCHAR(300)
-);
-GO
-
--- D_ITEMS --
-
-IF OBJECT_ID('Level_1.D_items', 'U') IS NOT NULL
-	DROP TABLE Level_1.D_items;
-GO
-
-CREATE TABLE Level_1.D_items(
-	row_id	INT,
-	item_id	INT,
-	label_	VARCHAR(200),
-	abbreviation	VARCHAR(100),
-	dbsource	VARCHAR(20),
-	linksto	VARCHAR(50),
-	category	VARCHAR(100),
-	unitname	VARCHAR(100),
-	param_type	VARCHAR(30),
-	conceptid	INT
-);
-GO
-
--- D_LABITEMS --
-
-IF OBJECT_ID('Level_1.D_labitems', 'U') IS NOT NULL
-	DROP TABLE Level_1.D_labitems;
-GO
-
-CREATE TABLE Level_1.D_labitems(
-	row_id	INT,
-	item_id	INT,
-	label_	VARCHAR(200),
-	fluid	VARCHAR(100),
-	category	VARCHAR(100),
-	loinc_code	VARCHAR(100)
-);
-GO
-
--- DATETIMEEVENTS --
-
-IF OBJECT_ID('Level_1.Datetimeevents', 'U') IS NOT NULL
-	DROP TABLE Level_1.Datetimeevents;
-GO
-
-CREATE TABLE Level_1.Datetimeevents(
-	row_id	INT,
-	subject_id	INT,
-	hadm_id	INT,
-	icustay_id	INT,
-	itemid	INT,
-	charttime	DATETIME2(0),
-	storetime	DATETIME2(0),
-	cgid	INT,
-	value_	DATETIME2(0),
-	valueuom	VARCHAR(50),
-	warning	TINYINT,
-	error	TINYINT,
-	resultstatus	VARCHAR(50),
-	stopped_	VARCHAR(50)
-);
-GO
-
--- DIAGNOSES_ICD --
-
-IF OBJECT_ID('Level_1.Diagnoses_icd', 'U') IS NOT NULL
-	DROP TABLE Level_1.Diagnoses_icd;
-GO
-
-CREATE TABLE Level_1.Diagnoses_icd(
-	row_id	INT, -- NOT NULL
-	subject_id	INT, -- NOT NULL
-	hadm_id	INT, -- NOT NULL
-	seq_num	INT,
-	icd9_code	VARCHAR(10)
-);
-GO
-
--- DRFCODES --
-
-IF OBJECT_ID('Level_1.Drgcodes', 'U') IS NOT NULL
-	DROP TABLE Level_1.Drgcodes;
-GO
-
-CREATE TABLE Level_1.Drgcodes(
-	row_id	INT,
-	subject_id	INT,
-	hadm_id	INT,
-	drg_type	VARCHAR(20),
-	drg_code	VARCHAR(20),
-	description_	VARCHAR(300),
-	drg_severity	TINYINT,
-	drg_mortality	TINYINT
-);
-GO
-
--- ICUSTAYS --
-
-IF OBJECT_ID('Level_1.Icustays', 'U') IS NOT NULL
-	DROP TABLE Level_1.Icustays;
-GO
-
-CREATE TABLE Level_1.Icustays(
-	row_id	INT,
-	subject_id	INT,
-	hadm_id	INT,
-	icustay_id	INT,
-	dbsource	VARCHAR(20),
-	first_careunit	VARCHAR(20),
-	last_careunit	VARCHAR(20),
-	first_wardid	TINYINT,
-	last_wardid	TINYINT,
-	intime	DATETIME2(0),
-	outtime	DATETIME2(0),
-	los	DECIMAL(6,4)
-);
-GO
-
--- INPUTEVENTS_CV --
-
-IF OBJECT_ID('Level_1.Inputevents_cv', 'U') IS NOT NULL
-	DROP TABLE Level_1.Inputevents_cv;
-GO
-
-CREATE TABLE Level_1.Inputevents_cv(
-	row_id	INT,
-	subject_id	INT,
-	hadm_id	INT,
-	icustay_id	INT,
-	charttime	DATETIME2(0),
-	itemid	INT,
-	amount	FLOAT(53),
-	amountuom	VARCHAR(30),
-	rate	FLOAT(53),
-	rateuom	VARCHAR(30),
-	storetime	DATETIME2(0),
-	cgid	BIGINT,
-	orderid	BIGINT,
-	linkorderid	BIGINT,
-	stopped_	VARCHAR(30),
-	newbottle	INT,
-	originalamount	FLOAT(53),
-	originalamountuom	VARCHAR(30),
-	originalroute	VARCHAR(30),
-	originalrate	FLOAT(53),
-	originalrateuom	VARCHAR(30),
-	originalsite	VARCHAR(30)
-);
-GO
-
--- INPUTEVENTS_MV --
-
-IF OBJECT_ID('Level_1.Inputevents_mv', 'U') IS NOT NULL
-	DROP TABLE Level_1.Inputevents_mv;
-GO
-
-CREATE TABLE Level_1.Inputevents_mv(
-	row_id	INT,
-	subject_id	INT,
-	hadm_id	INT,
-	icustay_id	INT,
-	starttime	DATETIME2(0),
-	endtime	DATETIME2(0),
-	itemid	INT,
-	amount	FLOAT(53),
-	amountuom	VARCHAR(30),
-	rate	FLOAT(53),
-	rateuom	VARCHAR(30),
-	storetime	DATETIME2(0),
-	cgid	BIGINT,
-	orderid	BIGINT,
-	linkorderid	BIGINT,
-	ordercategoryname	VARCHAR(100),
-	secondaryordercategoryname	VARCHAR(100),
-	ordercomponenttypedescription	VARCHAR(200),
-	ordercategorydescription	VARCHAR(50),
-	patientweight	FLOAT(53),
-	totalamount	FLOAT(53),
-	totalamountuom	VARCHAR(50),
-	isopenbag	SMALLINT,
-	continueinnextdept	SMALLINT,
-	cancelreason	SMALLINT,
-	statusdescription	VARCHAR(30),
-	comments_editedby	VARCHAR(30),
-	comments_canceledby	VARCHAR(30),
-	comments_date	DATETIME2(0),
-	originalamount	FLOAT(53),
-	originalrate	FLOAT(53)
-);
-GO
-
--- LABEVENTS --
-
-IF OBJECT_ID('Level_1.Labevents', 'U') IS NOT NULL
-	DROP TABLE Level_1.Labevents;
-GO
-
-CREATE TABLE Level_1.Labevents(
-	row_id	INT,
-	subject_id	INT,
-	hadm_id	INT,
-	itemid	INT,
-	charttime	DATETIME2(0),
-	value_	VARCHAR(200),
-	valuenum	FLOAT(53),
-	valueuom	VARCHAR(20),
-	flag	VARCHAR(20)
-);
-GO
-
--- MICROBIOLOGYEVENTS --
-
-IF OBJECT_ID('Level_1.Microbiologyevents', 'U') IS NOT NULL
-	DROP TABLE Level_1.Microbiologyevents;
-GO
-
-CREATE TABLE Level_1.Microbiologyevents(
-	row_id	INT,
-	subject_id	INT,
-	hadm_id	INT,
-	chartdate	DATETIME2(0),
-	charttime	DATETIME2(0),
-	spec_itemid	INT,
-	spec_type_desc	VARCHAR(100),
-	org_itemid	INT,
-	org_name	VARCHAR(100),
-	isolate_num	SMALLINT,
-	ab_itemid	INT,
-	ab_name	VARCHAR(30),
-	dilution_text	VARCHAR(10),
-	dilution_comparison	VARCHAR(20),
-	dilution_value	FLOAT(53),
-	interpretation	VARCHAR(5)
-);
-
--- NOTEEVENTS --
-
-IF OBJECT_ID('Level_1.Noteevents', 'U') IS NOT NULL
-	DROP TABLE Level_1.Noteevents;
-GO
-
-CREATE TABLE Level_1.Noteevents(
-	row_id	INT,
-	subject_id	INT,
-	hadm_id	INT,
-	chartdate	DATETIME2(0),
-	charttime	DATETIME2(0),
-	storetime	DATETIME2(0),
-	category	VARCHAR(50),
-	description_	VARCHAR(300),
-	cgid	INT,
-	ISERROR	CHAR(1),
-	text_	TEXT
-);
-GO
-
--- OUTPUTEVENTS --
-
-IF OBJECT_ID('Level_1.Outputevents', 'U') IS NOT NULL
-	DROP TABLE Level_1.Outputevents;
-GO
-
-CREATE TABLE Level_1.Outputevents(
-	row_id	INT,
-	subject_id	INT,
-	hadm_id	INT,
-	icustay_id	INT,
-	charttime	DATETIME2(0),
-	itemid	INT,
-	value_	FLOAT(53),
-	valueuom	VARCHAR(50),
-	storetime	DATETIME2(0),
-	cgid	BIGINT,
-	stopped_	VARCHAR(30),
-	newbottle	INT,
-	iserror	SMALLINT
-);
-GO
-
--- PATIENTS --
-
-IF OBJECT_ID('Level_1.Patients', 'U') IS NOT NULL
-	DROP TABLE Level_1.Patients;
-GO
-
-CREATE TABLE Level_1.Patients(
-	row_id	INT,
-	subject_id	INT,
-	gender	VARCHAR(5),
-	dob	DATETIME2(0),
-	dod	DATETIME2(0),
-	dod_hosp	DATETIME2(0),
-	dod_ssn	DATETIME2(0),
-	expire_flag	VARCHAR(5)
-);
-GO
-
--- PRESCRIPTIONS --
-
-IF OBJECT_ID('Level_1.Prescriptions', 'U') IS NOT NULL
-	DROP TABLE Level_1.Prescriptions;
-GO
-
-CREATE TABLE Level_1.Prescriptions(
-	row_id	INT,
-	subject_id	INT,
-	hadm_id	INT,
-	icustay_id	INT,
-	startdate	DATETIME2(0),
-	enddate	DATETIME2(0),
-	drug_type	VARCHAR(100),
-	drug	VARCHAR(100),
-	drug_name_poe	VARCHAR(100),
-	drug_name_generic	VARCHAR(100),
-	formularly_drug_cd	VARCHAR(120),
-	gsn	VARCHAR(200),
-	ndc	VARCHAR(120),
-	prod_strength	VARCHAR(120),
-	dose_val_rx	VARCHAR(120),
-	dose_unit_rx	VARCHAR(120),
-	form_val_disp	VARCHAR(120),
-	form_unit_disp	VARCHAR(120),
-	route_	VARCHAR(120)
-);
-
--- PROCEDUREEVENTS_MV --
-
-IF OBJECT_ID('Level_1.Procedureevents_mv', 'U') IS NOT NULL
-	DROP TABLE Level_1.Procedureevents_mv;
-GO
-
-CREATE TABLE Level_1.Procedureevents_mv(
-	row_id	INT, --NOTNULL
-	subject_id	INT,--NOTNULL
-	hadm_id	INT,--NOTNULL
-	icustay_id	INT,
-	starttime	DATETIME2(0),
-	endtime	DATETIME2(0),
-	itemid	INT,
-	value_	FLOAT(53),
-	valueuom	VARCHAR(30),
-	location_	VARCHAR(30),
-	locationcategory	VARCHAR(30),
-	storetime	DATETIME2(0),
-	cgid	INT,
-	orderid	INT,
-	linkorderid	INT,
-	ordercategoryname	VARCHAR(100),
-	secondaryordercategoryname	VARCHAR(100),
-	ordercomponenttypedescription	VARCHAR(200),
-	ordercategorydescription	VARCHAR(50),
-	patientweight	FLOAT(53),
-	totalamount	FLOAT(53),
-	totalamountuom	VARCHAR(50),
-	isopenbag	SMALLINT,
-	continueinnextdept	SMALLINT,
-	cancelreason	SMALLINT,
-	statusdescription	VARCHAR(30),
-	comments_editedby	VARCHAR(30),
-	comments_canceledby	VARCHAR(30),
-	comments_date	DATETIME2(0),
-);
-GO
-
--- PROCEDURES_ICD --
-
-IF OBJECT_ID('Level_1.Procedures_icd', 'U') IS NOT NULL
-	DROP TABLE Level_1.Procedures_icd;
-GO
-
-CREATE TABLE Level_1.Procedures_icd(
-	row_id	INT, --NOTNULL
-	subject_id	INT,--NOTNULL
-	hadm_id	INT,--NOTNULL
-	seq_num	INT,
-	icd9_code	VARCHAR(10)
-);
-GO
-
-
--- SERVICES_ --
-
-IF OBJECT_ID('Level_1.Services_', 'U') IS NOT NULL
-	DROP TABLE Level_1.Services_;
-GO
-
-CREATE TABLE Level_1.Services_(
-	row_id	INT, --NOTNULL
-	subject_id	INT,--NOTNULL
-	hadm_id	INT,--NOTNULL
-	transfertime	DATETIME2(0),
-	prev_service	VARCHAR(20),
-	curr_service	VARCHAR(20)
-);
-GO
-
--- TRANSFERS --
-
-IF OBJECT_ID('Level_1.Transfers', 'U') IS NOT NULL
-	DROP TABLE Level_1.Transfers;
-GO
-
-CREATE TABLE Level_1.Transfers(
-	row_id	INT, --NOTNULL
-	subject_id	INT,--NOTNULL
-	hadm_id	INT,--NOTNULL
-	icustay_id	INT,
-	dbsource	VARCHAR(20),
-	eventtype	VARCHAR(20),
-	prev_careunit	VARCHAR(20),
-	curr_careunit	VARCHAR(20),
-	prev_wardid	SMALLINT,
-	curr_wardid	SMALLINT,
-	intime	DATETIME2(0),
-	outtime	DATETIME2(0),
-	los	INT
-);
-GO
+EXEC Level_1.load_level1 
