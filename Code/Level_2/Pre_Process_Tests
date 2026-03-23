@@ -1,0 +1,98 @@
+/* 
+=================
+===   TESTS   ===
+=================
+
+	- DUPLICATED ROWS
+	- MISSING VALUES
+	- TRIMMED STRINGS
+	- NUMERICL VALUES HAVE THE SAME RANGE
+	- RIGHT DATES
+	- CATEGORICAL STRINGS ARE RIGHT
+	- ID ARE ALL UNIQUE AND HAVE NO NULLS
+
+*/
+/*
+-- ADMISSIONS --
+	- row_id (ALL UNIQUE), hadm_id(ALL UNIQUE) SUBJECT_ID MAY NOT BE UNIQUE
+		is row_id necessary if hadm_id already unique?
+SELECT
+	hadm_id
+FROM Level_1.Admissions
+GROUP BY hadm_id
+HAVING COUNT(*) > 1
+
+	- admit, disch, death
+		- are all admittime before disch/deathtime (yes)
+		- are there any dischtime different to nonnull deathtime (yes row_id = 39980)
+SELECT
+	admittime,
+	dischtime,
+	deathtime
+FROM Level_1.Admissions
+WHERE admittime > dischtime
+
+SELECT
+	*
+FROM Level_1.Admissions
+WHERE dischtime != deathtime
+
+
+	- admission type, addmission location
+SELECT
+	admission_type
+FROM Level_1.Admissions
+GROUP BY admission_type 
+
+
+	- admission location correct values
+			have the correct 
+SELECT
+	admission_location
+FROM Level_1.Admissions
+GROUP BY admission_location
+
+
+	- insurance, language, religion, marital status, ethnicity
+		Categories:
+			language(null)
+			religion (has categories with similar meaning - null, not specified, unobtainable)
+			marital_status (null and unknown(default))
+			ethnicity (unable to obtain = unknown/not specified AND two HISPANIC/LATINO - HISPANIC OR LATINO - PUERTO RICAN)
+		
+		Subject_ID congruency:
+			ONLY SUBID 10088 AND 40310 HAVE DIFFERENT INSURANCES AT DIFFERENT POINTS WHICH IS VALID
+SELECT
+	ethnicity
+FROM Level_1.Admissions
+GROUP BY ethnicity;
+
+SELECT 
+	subject_id,
+	insurance,
+	language_,
+	religion,
+	marital_status
+	ethnicity
+FROM Level_1.Admissions
+WHERE subject_id IN (
+	SELECT
+		subject_id
+	FROM Level_1.Admissions
+	GROUP BY subject_id
+	HAVING Count(*) > 1 
+)
+
+
+	- edreg_edout 
+		null values for patients not registered or discharged from emergency
+		congruincy in nulls (yes - all edreg null have also edout nulls)
+		all edregtimes are before edouttime (yes)
+	
+	- diagnosis
+		are there any similar diagnosis that can be explained as the same
+		ESOPHAGEAL CA/SDA SAME AS ESOPHAGEAL CANCER/SDA
+SELECT
+	diagnosis
+FROM Level_1.Admissions
+GROUP BY diagnosis
